@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, Get, Put, Delete, UsePipes, ValidationPipe, Patch, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Param, Get, Put, Delete, UsePipes, ValidationPipe, Patch, UseGuards, BadRequestException } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto, UpdateStudentDto, CreateProfileDto, UpdateProfileDto } from './dto/student.dto';
 import { StudentGuard } from './student.guard';
@@ -10,6 +10,9 @@ export class StudentController {
   @Post('create')
   @UsePipes(new ValidationPipe())
   createStudent(@Body() dto: CreateStudentDto) {
+    if (dto.password !== dto.confirmPassword) {
+      throw new BadRequestException('Passwords do not match');
+    }
     return this.studentService.createStudent(dto);
   }
 

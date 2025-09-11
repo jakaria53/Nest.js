@@ -12,6 +12,13 @@ export class Student {
   @Column({ unique: true })
   email: string;
 
+   @Column({ type: 'int', nullable: true })
+    age: number;
+
+    @Column({ type: 'varchar', nullable: true })
+     address: string;
+
+
   @Column()
   password: string;
 

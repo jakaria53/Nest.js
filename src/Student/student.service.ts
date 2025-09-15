@@ -23,7 +23,8 @@ export class StudentService {
       throw new BadRequestException('Invalid email or password');
     }
     const payload = { id: student.id, email: student.email };
-    return { token: await this.jwtService.signAsync(payload, { secret: 'student_jwt_secret_key' }) };
+    const token = this.jwtService.sign(payload);
+    return { token };
   }
 
   async createProfile(studentId: number, dto: CreateProfileDto): Promise<Profile> {
@@ -76,4 +77,8 @@ export class StudentService {
     await this.studentRepo.delete(studentId);
     return { message: 'Student deleted successfully' };
   }
+  async getAllStudents(): Promise<Student[]> {
+  return this.studentRepo.find({ relations: ['profile', 'courses'] }); // include relations if needed
+}
+
 }

@@ -1,4 +1,3 @@
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Student } from './student.entity';
@@ -6,13 +5,14 @@ import { Profile } from './profile.entity';
 import { StudentService } from './student.service';
 import { StudentController } from './student.controller';
 import { JwtModule } from '@nestjs/jwt';
+import { Course } from './course/course.entity'; // Add Course
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Student, Profile]),
+    TypeOrmModule.forFeature([Student, Profile, Course]), // Include Course
     JwtModule.register({
       global: true,
-      secret: 'i used week guard', 
+      secret: 'student_jwt_secret_key', 
       signOptions: { expiresIn: '1d' },
     }),
   ],

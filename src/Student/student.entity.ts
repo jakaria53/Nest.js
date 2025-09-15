@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Profile } from './profile.entity';
+import { Course } from './course/course.entity'; // Import Course
 
 @Entity()
 export class Student {
@@ -12,12 +13,11 @@ export class Student {
   @Column({ unique: true })
   email: string;
 
-   @Column({ type: 'int', nullable: true })
-    age: number;
+  @Column({ type: 'int', nullable: true })
+  age: number;
 
-    @Column({ type: 'varchar', nullable: true })
-     address: string;
-
+  @Column({ type: 'varchar', nullable: true })
+  address: string;
 
   @Column()
   password: string;
@@ -25,4 +25,7 @@ export class Student {
   @OneToOne(() => Profile, (profile) => profile.student, { cascade: true })
   @JoinColumn()
   profile: Profile;
+
+  @OneToMany(() => Course, (course) => course.student, { cascade: true })
+  courses: Course[]; // Proper TypeORM relation
 }

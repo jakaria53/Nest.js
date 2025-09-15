@@ -1,7 +1,8 @@
-import { Controller, Post, Body, Param, Get, Put, Delete, UsePipes, ValidationPipe, Patch, UseGuards, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Body, Param, Get, Put, Delete, Patch, UseGuards, BadRequestException, Req, UsePipes, ValidationPipe } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto, UpdateStudentDto, CreateProfileDto, UpdateProfileDto } from './dto/student.dto';
 import { StudentGuard } from './student.guard';
+import { Request } from '@nestjs/common';
 
 @Controller('students')
 export class StudentController {
@@ -22,16 +23,16 @@ export class StudentController {
   }
 
   @UseGuards(StudentGuard)
-  @Get(':id')
-  getStudent(@Param('id') id: number) {
-    return this.studentService.getStudentWithProfile(id);
+  @Get('me')
+  getMyProfile(@Req() req: Request) {
+    return this.studentService.getStudentWithProfile(req['user'].id);
   }
 
-
-  @Post(':id/profile')
-  createProfile(@Param('id') id: number, @Body() dto: CreateProfileDto) {
-    return this.studentService.createProfile(id, dto);
-  }
+@UseGuards(StudentGuard)
+@Post(':id/profile')
+createProfile(@Param('id') id: number, @Body() dto: CreateProfileDto) {
+  return this.studentService.createProfile(id, dto);
+}
 
   @UseGuards(StudentGuard)
   @Put(':id/profile')
@@ -45,7 +46,7 @@ export class StudentController {
     return this.studentService.deleteProfile(id);
   }
 
-  
+  @UseGuards(StudentGuard)
   @Patch(':id')
   updateStudent(@Param('id') id: number, @Body() dto: UpdateStudentDto) {
     return this.studentService.updateStudent(id, dto);
@@ -56,4 +57,9 @@ export class StudentController {
   deleteStudent(@Param('id') id: number) {
     return this.studentService.deleteStudent(id);
   }
+  @UseGuards(StudentGuard)
+@Get()
+getAllStudents() {
+  return this.studentService.getAllStudents();
+}
 }

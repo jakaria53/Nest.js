@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsString, IsEmail, MinLength, IsNumber,IsInt,Min } from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail, MinLength, IsNumber,IsInt,Min, IsOptional } from 'class-validator';
 
 export class CreateStudentDto {
   @IsString()
@@ -8,7 +8,8 @@ export class CreateStudentDto {
 
   @IsEmail({}, { message: 'Invalid email format' })
   email: string;
-
+  @IsNotEmpty() gender: string;
+  @IsNotEmpty() phone: string;
    @IsInt()
   @Min(1)
   age: number;
@@ -24,12 +25,22 @@ export class CreateStudentDto {
 
 export class UpdateStudentDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   name?: string;
 
   @IsEmail({}, { message: 'Invalid email format' })
+  @IsOptional()
   email?: string;
+
+  @IsString()
+  @IsOptional()
+  gender?: string;
+
+  @IsString()
+  @IsOptional()
+  phone?: string;
 }
+
 
 export class CreateProfileDto {
   @IsNumber()

@@ -3,9 +3,10 @@ import { Module } from '@nestjs/common';
  import { StudentModule } from './Student/student.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { CourseModule } from './Student/course/course.module';
  
  @Module({
- imports: [StudentModule, TypeOrmModule.forRoot(
+ imports: [StudentModule, CourseModule,TypeOrmModule.forRoot(
  { type: 'postgres',
  host: 'localhost',
  port: 5432,
